@@ -3,3 +3,7 @@
 export function isDefined<T>(stuff: T): stuff is NonNullable<T> {
     return stuff !== undefined && stuff !== null
 }
+
+export const overflowModulus = (x: number, mod: number): number => {
+    return (x + mod) % mod;
+}

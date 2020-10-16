@@ -2,7 +2,12 @@ import React, {useEffect, useRef} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import * as RS from "reactstrap";
 import {TitleAndBreadcrumb} from "../elements/TitleAndBreadcrumb";
-import {getAnsweredQuestionsByDate, getProgress} from "../../state/actions";
+import {
+    getAnsweredQuestionsByDate,
+    getEasiestUnsolvedQuestions,
+    getMostRecentAttemptedQuestionPages,
+    getProgress, loadMyAssignments, logAction
+} from "../../state/actions";
 import {AppState} from "../../state/reducers";
 import {isTeacher} from "../../services/user";
 import {withRouter} from "react-router-dom";
@@ -13,11 +18,14 @@ import {DailyStreakPanel} from "../elements/panels/DailyStreakPanel";
 import {Tabs} from "../elements/Tabs";
 import {FlushableRef, QuestionProgressCharts} from "../elements/views/QuestionProgressCharts";
 import {HUMAN_QUESTION_TAGS, HUMAN_QUESTION_TYPES} from "../../services/questions";
-import {ActivityGraph} from "../elements/views/ActivityGraph";
 import {ProgressBar} from "../elements/views/ProgressBar";
 import {safePercentage} from "../../services/validation";
 import {TeacherAchievement} from "../elements/TeacherAchievement";
 import {SITE, SITE_SUBJECT} from "../../services/siteConstants";
+import {QuestionLinkRow} from "../elements/QuestionLinkRow";
+import {ProgressHeatmap} from "../elements/views/ProgressHeatmap";
+import {filterAssignmentsByStatus} from "../../services/assignments";
+import {TabbedAssignments} from "../elements/TabbedAssignments";
 
 export const siteSpecific = {
     [SITE.PHY]: {
@@ -53,14 +61,24 @@ export const MyProgress = withRouter(({user, match: {params: {userIdOfInterest}}
     const userProgress = useSelector((state: AppState) => state?.userProgress);
     const achievements = useSelector((state: AppState) => state?.userProgress?.userSnapshot?.achievementsRecord);
     const answeredQuestionsByDate = useSelector((state: AppState) => state?.answeredQuestionsByDate);
+    const mostRecentQuestions = useSelector((state: AppState) => state?.mostRecentAttemptedQuestions);
+    const easiestUnsolvedQuestions = useSelector((state: AppState) => state?.easiestUnsolvedQuestions);
+    const assignments = useSelector((state: AppState) => state?.assignments || null);
+    const myAssignments = filterAssignmentsByStatus(assignments);
 
     useEffect(() => {
         if (viewingOwnData && user.loggedIn) {
             dispatch(getProgress());
-            dispatch(getAnsweredQuestionsByDate(user.id as number, 0, Date.now(), false));
+            dispatch(getAnsweredQuestionsByDate(user.id as number, 0, Date.now(), true));
+            dispatch(getMostRecentAttemptedQuestionPages(user.id as number, 5));
+            dispatch(getEasiestUnsolvedQuestions(user.id as number, false, 5));
+            dispatch(loadMyAssignments());
+            dispatch(logAction({type: "VIEW_MY_ASSIGNMENTS"}));
         } else if (isTeacher(user)) {
             dispatch(getProgress(userIdOfInterest));
-            dispatch(getAnsweredQuestionsByDate(userIdOfInterest, 0, Date.now(), false));
+            dispatch(getAnsweredQuestionsByDate(userIdOfInterest, 0, Date.now(), true));
+            dispatch(getMostRecentAttemptedQuestionPages(userIdOfInterest, 5));
+            dispatch(getEasiestUnsolvedQuestions(userIdOfInterest, false, 5));
         }
     }, [dispatch, userIdOfInterest, viewingOwnData, user]);
 
@@ -160,9 +178,31 @@ export const MyProgress = withRouter(({user, match: {params: {userIdOfInterest}}
 
                         {answeredQuestionsByDate && <div className="mt-4">
                             <h4>Question attempts over time</h4>
-                            <div>
-                                <ActivityGraph answeredQuestionsByDate={answeredQuestionsByDate} />
-                            </div>
+                            <ProgressHeatmap answeredQuestionsByDate={answeredQuestionsByDate} />
+                        </div>}
+
+                        <RS.Row>
+                            {mostRecentQuestions && <RS.Col md={12} lg={SITE_SUBJECT === SITE.PHY ? 12 : 6} className="mt-4">
+                                <h4>Most recently attempted questions</h4>
+                                <RS.ListGroup className="link-list list-group-links list-gameboard">
+                                    {mostRecentQuestions.map((question,i) =>
+                                        <QuestionLinkRow key={i} question={question}/>
+                                    )}
+                                </RS.ListGroup>
+                            </RS.Col>}
+                            {easiestUnsolvedQuestions && <RS.Col md={12} lg={SITE_SUBJECT === SITE.PHY ? 12 : 6} className="mt-4">
+                                <h4>Easiest unsolved questions</h4>
+                                <RS.ListGroup className="link-list list-group-links list-gameboard">
+                                    {easiestUnsolvedQuestions.map((question,i) =>
+                                        <QuestionLinkRow key={i} question={question}/>
+                                    )}
+                                </RS.ListGroup>
+                            </RS.Col>}
+                        </RS.Row>
+
+                        {myAssignments && <div className="mt-4">
+                            <h4>Your assignments</h4>
+                            <TabbedAssignments myAssignments={myAssignments}/>
                         </div>}
                     </div>,
                     ...(viewingOwnData && isTeacher(user) && SITE_SUBJECT == SITE.PHY && {"Teacher Activity": <div>

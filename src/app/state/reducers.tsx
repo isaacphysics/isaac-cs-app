@@ -410,6 +410,36 @@ export const answeredQuestionsByDate = (answeredQuestionsByDateState: AnsweredQu
     }
 };
 
+type MostRecentAttemptedQuestionsState = GameboardItem[] | null;
+export const mostRecentAttemptedQuestions = (mostRecentAttemptedQuestionsState: MostRecentAttemptedQuestionsState = null, action: Action) => {
+    switch (action.type) {
+        case ACTION_TYPE.QUESTION_MOST_RECENT_REQUEST: {
+            return null;
+        }
+        case ACTION_TYPE.QUESTION_MOST_RECENT_RESPONSE_SUCCESS: {
+            return action.questions;
+        }
+        default: {
+            return mostRecentAttemptedQuestionsState;
+        }
+    }
+};
+
+type EasiestUnsolvedQuestionsState = GameboardItem[] | null;
+export const easiestUnsolvedQuestions = (easiestUnsolvedQuestionsState: EasiestUnsolvedQuestionsState = null, action: Action) => {
+    switch (action.type) {
+        case ACTION_TYPE.QUESTION_EASIEST_UNSOLVED_REQUEST: {
+            return null;
+        }
+        case ACTION_TYPE.QUESTION_EASIEST_UNSOLVED_RESPONSE_SUCCESS: {
+            return action.questions;
+        }
+        default: {
+            return easiestUnsolvedQuestionsState;
+        }
+    }
+};
+
 type GameboardEditorQuestionsState = ContentSummaryDTO[] | null;
 export const gameboardEditorQuestions = (gameboardEditorQuestions: GameboardEditorQuestionsState = null, action: Action) => {
     switch(action.type) {
@@ -972,6 +1002,8 @@ const appReducer = combineReducers({
     doc,
     questions,
     answeredQuestionsByDate,
+    mostRecentAttemptedQuestions,
+    easiestUnsolvedQuestions,
     currentTopic,
     currentGameboard,
     tempExamBoard,
@@ -1024,6 +1056,8 @@ export type AppState = undefined | {
     doc: DocState;
     questions: QuestionsState;
     answeredQuestionsByDate: AnsweredQuestionsByDateState;
+    mostRecentAttemptedQuestions: MostRecentAttemptedQuestionsState;
+    easiestUnsolvedQuestions: EasiestUnsolvedQuestionsState;
     currentTopic: CurrentTopicState;
     currentGameboard: CurrentGameboardState;
     tempExamBoard: TempExamBoardState;

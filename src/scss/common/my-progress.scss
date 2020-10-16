@@ -80,3 +80,13 @@
     }
   }
 }
+
+.heatmap {
+  display: grid;
+  justify-items: center;
+  overflow-x: auto;
+}
+
+.heatmap-legend-item {
+  width: 2rem;
+}

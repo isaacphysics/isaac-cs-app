@@ -95,6 +95,21 @@ export const api = {
         },
         getProgress: (userIdOfInterest = "current_user"): AxiosPromise<AppTypes.UserProgress> => {
             return endpoint.get(`users/${userIdOfInterest}/progress`);
+        },
+        getMostRecentAttempts: (userId: number | string, limit: number): AxiosPromise<ApiTypes.GameboardItem[]> => {
+            return endpoint.get(`/users/${userId}/recent_questions`, {
+                params: {
+                    limit,
+                }
+            });
+        },
+        getEasiestUnsolved: (userId: number | string, bookOnly: boolean, limit: number): AxiosPromise<ApiTypes.GameboardItem[]> => {
+            return endpoint.get(`/users/${userId}/easiest_unsolved`, {
+                params: {
+                    bookOnly,
+                    limit,
+                }
+            });
         }
     },
     authentication: {
