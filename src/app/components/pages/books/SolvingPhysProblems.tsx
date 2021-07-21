@@ -12,7 +12,7 @@ export const SolvingPhysProblems = () => {
     return <Container className="physics">
         <Col>
             <div className="book-intro">
-                <TitleAndBreadcrumb className="mb-5" currentPageTitle="How To Solve Physics Problems" help={pageHelp} />
+                <TitleAndBreadcrumb className="mb-5" currentPageTitle="How To Solve Physics Problems" />
                 <PageFragment fragmentId="solve_physics_problems_intro"/>
             </div>
         </Col>

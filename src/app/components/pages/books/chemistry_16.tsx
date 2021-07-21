@@ -14,7 +14,7 @@ export const Chemistry16 = () => {
     return <Container className="chemistry">
         <Col>
             <div className="book-intro">
-                <TitleAndBreadcrumb className="mb-5" currentPageTitle="Mastering essential pre-university chemistry" help={pageHelp} />
+                <TitleAndBreadcrumb className="mb-5" currentPageTitle="Mastering essential pre-university chemistry" help={pageHelp} modalId="chemistry_book_help"/>
                 <img className="book-cover" src="/assets/phy/books/chemistry_16.jpg" alt="Cover of the book."/>
                 <PageFragment fragmentId="chemistry_16_intro"/>
             </div>

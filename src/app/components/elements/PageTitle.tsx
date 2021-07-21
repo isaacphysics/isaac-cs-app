@@ -1,9 +1,10 @@
 import React, {ReactElement, useEffect, useRef} from "react";
-import {UncontrolledTooltip} from "reactstrap";
+import {Button, UncontrolledTooltip} from "reactstrap";
 import {SITE, SITE_SUBJECT, SITE_SUBJECT_TITLE} from "../../services/siteConstants";
-import {setMainContentId} from "../../state/actions";
+import {closeActiveModal, openActiveModal, setMainContentId} from "../../state/actions";
 import {useDispatch, useSelector} from "react-redux";
 import {AppState} from "../../state/reducers";
+import {PageFragment} from "./PageFragment";
 import {LaTeX} from "./LaTeX";
 
 export interface PageTitleProps {
@@ -12,12 +13,15 @@ export interface PageTitleProps {
     help?: string | ReactElement;
     className?: string;
     level?: number;
+    modalId?: string;
 }
 
-export const PageTitle = ({currentPageTitle, subTitle, help, className, level}: PageTitleProps) => {
+export const PageTitle = ({currentPageTitle, subTitle, help, className, level, modalId}: PageTitleProps) => {
     const dispatch = useDispatch();
     const openModal = useSelector((state: AppState) => Boolean(state?.activeModals?.length));
     const headerRef = useRef<HTMLHeadingElement>(null);
+
+    const showModal = modalId && SITE_SUBJECT === SITE.PHY;
 
     useEffect(() => {dispatch(setMainContentId("main-heading"));}, []);
     useEffect(() => {
@@ -28,12 +32,32 @@ export const PageTitle = ({currentPageTitle, subTitle, help, className, level}: 
         }
     }, [currentPageTitle]);
 
+    interface HelpModalProps {
+        modalId: string;
+    }
+
+    const HelpModal = (props: HelpModalProps) => {
+        return <>
+            <PageFragment fragmentId={props.modalId}/>
+        </>
+    };
+
+    function openHelpModal(modalId: string) {
+        dispatch(openActiveModal({
+            closeAction: () => {dispatch(closeActiveModal())},
+            size: "xl",
+            title: "Help",
+            body: <HelpModal modalId={modalId}/>
+        }))
+    }
+
     return <h1 id="main-heading" tabIndex={-1} ref={headerRef} className={`h-title h-secondary${className ? ` ${className}` : ""}`}>
         <LaTeX markup={currentPageTitle} />
         {SITE_SUBJECT === SITE.PHY && level !== undefined && level !== 0 &&
             <span className="float-right h-subtitle">Level {level}</span>}
-        {help && <span id="title-help">Help</span>}
-        {help && <UncontrolledTooltip target="#title-help" placement="bottom">{help}</UncontrolledTooltip>}
+        {help && !showModal && <span id="title-help">Help</span>}
+        {help && !showModal && <UncontrolledTooltip target="#title-help" placement="bottom">{help}</UncontrolledTooltip>}
+        {modalId && showModal && <Button color="link" id="title-help-modal" onClick={() => openHelpModal(modalId)}>Help</Button>}
         {subTitle && <span className="h-subtitle d-none d-sm-block">{subTitle}</span>}
     </h1>
 };

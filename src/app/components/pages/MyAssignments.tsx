@@ -37,7 +37,7 @@ export const MyAssignments = () => {
     </span>;
 
     return <Container>
-        <TitleAndBreadcrumb currentPageTitle="My assignments" help={pageHelp} />
+        <TitleAndBreadcrumb currentPageTitle="My assignments" help={pageHelp} modalId="my_assignments_help" />
         <Card className="my-5">
             <CardBody className="pt-0">
                 <ShowLoading until={assignments}>

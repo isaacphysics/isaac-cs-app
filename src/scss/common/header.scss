@@ -65,6 +65,16 @@ header {
   align-items: center;
 }
 
+#title-help-modal {
+  float: right;
+  cursor: pointer;
+  font-size: 1.25rem;
+  line-height: 1.2;
+  min-height: 50px;
+  display: inline-flex;
+  align-items: center;
+}
+
 .h-subtitle {
   padding-top: 5px;
   margin-bottom: -5px;

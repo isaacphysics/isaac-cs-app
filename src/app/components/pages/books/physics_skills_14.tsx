@@ -13,7 +13,7 @@ export const PhysicsSkills14 = () => {
     return <Container>
         <Col>
             <div className="book-intro">
-                <TitleAndBreadcrumb className="mb-5" currentPageTitle="Mastering Essential Pre-University Physics" help={pageHelp} />
+                <TitleAndBreadcrumb className="mb-5" currentPageTitle="Mastering Essential Pre-University Physics" help="This book is now deprecated." />
                 <img className="book-cover" src="/assets/phy/books/physics_skills_14.jpg" alt="Cover of the book."/>
                 <PageFragment fragmentId="physics_skills_14_intro"/>
             </div>

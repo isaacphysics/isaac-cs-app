@@ -584,6 +584,7 @@ export function AssignmentProgress(props: AssignmentProgressPageProps) {
                 currentPageTitle={{[SITE.PHY]: "Assignment Progress", [SITE.CS]: "My markbook"}[SITE_SUBJECT]}
                 subTitle="Track your group performance by question"
                 help="Click on your groups to see the assignments you have set. View your students' progress by question."
+                modalId="assignment_progress_help"
             />
             <Row className="align-items-center d-none d-md-flex">
                 {/*<Col>*/}

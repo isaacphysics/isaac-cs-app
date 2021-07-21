@@ -419,7 +419,7 @@ const GroupsPageComponent = (props: GroupsPageProps) => {
     </span>;
 
     return <Container>
-        <TitleAndBreadcrumb currentPageTitle="Manage groups" className="mb-4" help={pageHelp} />
+        <TitleAndBreadcrumb currentPageTitle="Manage groups" className="mb-4" help={pageHelp} modalId="groups_help" />
         <Row className="mb-5">
             <Col md={4}>
                 <ShowLoading until={activeTab}>

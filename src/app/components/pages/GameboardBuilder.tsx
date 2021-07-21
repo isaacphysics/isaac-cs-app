@@ -97,7 +97,7 @@ export const GameboardBuilder = withRouter((props: {location: {search?: string}}
     </span>;
 
     return <RS.Container id="gameboard-builder">
-        <TitleAndBreadcrumb currentPageTitle="Gameboard builder" help={pageHelp}/>
+        <TitleAndBreadcrumb currentPageTitle="Gameboard builder" help={pageHelp} modalId="gameboard_builder_help"/>
 
         <RS.Card className="p-3 mt-4 mb-5">
             <RS.CardBody>

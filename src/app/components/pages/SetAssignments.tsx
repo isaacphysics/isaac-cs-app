@@ -321,7 +321,7 @@ const SetAssignmentsPageComponent = (props: SetAssignmentsPageProps) => {
     </span>;
 
     return <Container>
-        <TitleAndBreadcrumb currentPageTitle="Set assignments" help={pageHelp} />
+        <TitleAndBreadcrumb currentPageTitle="Set assignments" help={pageHelp} modalId="set_assignments_help"/>
         <h4 className="mt-4 mb-3">
             Add a gameboard from ...
         </h4>
