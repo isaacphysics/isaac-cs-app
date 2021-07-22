@@ -3,6 +3,7 @@ import React, {useEffect, useRef} from "react";
 import {Col, Row} from "reactstrap";
 
 import hljs from 'highlight.js/lib/core';
+import {addLineNumbers} from "../../services/highlightJs";
 
 interface IsaacCodeProps {
     doc: CodeSnippetDTO;
@@ -14,13 +15,14 @@ export const IsaacCodeSnippet = ({doc}: IsaacCodeProps) => {
     useEffect(() => {
         if (codeSnippetRef.current) {
             hljs.highlightElement(codeSnippetRef.current);
+            addLineNumbers(codeSnippetRef.current);
         }
     }, [doc]);
 
     return <div>
         <Row>
-            <Col>
-                <pre>
+            <Col className="code-snippet">
+                <pre className="line-numbers">
                     <code ref={codeSnippetRef} className={doc.disableHighlighting ? 'plaintext' : doc.language}>
                         {doc.code}
                     </code>
