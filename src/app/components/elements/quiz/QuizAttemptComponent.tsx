@@ -16,6 +16,7 @@ import {Col, Row} from "reactstrap";
 import {SITE, SITE_SUBJECT} from "../../../services/siteConstants";
 import {UserContextPicker} from "../inputs/UserContextPicker";
 import {below, useDeviceSize} from "../../../services/device";
+import { TrustedMarkdown } from "../TrustedMarkdown";
 
 type PageLinkCreator = (attempt: QuizAttemptDTO, page?: number) => string;
 
@@ -64,7 +65,8 @@ function QuizContents({attempt, sections, questions, pageLink}: QuizAttemptProps
                 </table>;
     } else {
         const anyStarted = questions.some(q => q.bestAttempt !== undefined);
-        return <div>
+        return <React.Fragment>
+            <div><TrustedMarkdown markdown={(attempt.quiz as IsaacQuizDTO).rubric || ""}></TrustedMarkdown></div>
             <h4>Quiz sections</h4>
             <ul>
                 {Object.keys(sections).map((k, index) => {
@@ -79,7 +81,7 @@ function QuizContents({attempt, sections, questions, pageLink}: QuizAttemptProps
                     </li>;
                 })}
             </ul>
-        </div>;
+        </React.Fragment>;
     }
 }
 
