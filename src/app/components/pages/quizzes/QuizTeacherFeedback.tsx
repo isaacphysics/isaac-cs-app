@@ -27,6 +27,8 @@ import {isDefined} from "../../../services/miscUtils";
 import {formatDate} from "../../elements/DateString";
 import {Spacer} from "../../elements/Spacer";
 import {isQuestion} from "../../../services/questions";
+import {API_PATH} from "../../../services/constants";
+import { getQuizAssignmentResultsSummaryCSV } from "../../../state/actions";
 
 interface QuizTeacherFeedbackProps {
     match: {params: {quizAssignmentId: string}}
@@ -221,25 +223,36 @@ const QuizTeacherFeedbackComponent = ({match: {params: {quizAssignmentId}}}: Qui
                     </span>
                     {isDefined(assignment.dueDate) && <><Spacer/>Due: {formatDate(assignment.dueDate)}</>}
                 </p>
-                <p>
-                    <RS.Label for="feedbackMode" className="pr-1">Feedback mode:</RS.Label>
-                    <RS.UncontrolledDropdown className="d-inline-block">
-                        <RS.DropdownToggle color="dark" outline className="px-3" caret={!settingFeedbackMode} id="feedbackMode" disabled={settingFeedbackMode}>
-                            {settingFeedbackMode ?
-                                <>Saving <RS.Spinner size="sm" className="quizFeedbackModeSpinner" /></>
-                            :   feedbackNames[assignment.quizFeedbackMode as QuizFeedbackMode]}
-                        </RS.DropdownToggle>
-                        <RS.DropdownMenu>
-                            {QuizFeedbackModes.map(mode =>
-                                <RS.DropdownItem key={mode}
-                                                 onClick={() => setFeedbackMode(mode)}
-                                                 active={mode === assignment?.quizFeedbackMode}>
-                                    {feedbackNames[mode]}
-                                </RS.DropdownItem>
-                            )}
-                        </RS.DropdownMenu>
-                    </RS.UncontrolledDropdown>
-                </p>
+                <RS.Row>
+                    <RS.Col>
+                        <RS.Label for="feedbackMode" className="pr-1">Feedback mode:</RS.Label>
+                        <RS.UncontrolledDropdown className="d-inline-block">
+                            <RS.DropdownToggle color="dark" outline className="px-3" caret={!settingFeedbackMode} id="feedbackMode" disabled={settingFeedbackMode}>
+                                {settingFeedbackMode ?
+                                    <>Saving <RS.Spinner size="sm" className="quizFeedbackModeSpinner" /></>
+                                :   feedbackNames[assignment.quizFeedbackMode as QuizFeedbackMode]}
+                            </RS.DropdownToggle>
+                            <RS.DropdownMenu>
+                                {QuizFeedbackModes.map(mode =>
+                                    <RS.DropdownItem key={mode}
+                                                    onClick={() => setFeedbackMode(mode)}
+                                                    active={mode === assignment?.quizFeedbackMode}>
+                                        {feedbackNames[mode]}
+                                    </RS.DropdownItem>
+                                )}
+                            </RS.DropdownMenu>
+                        </RS.UncontrolledDropdown>
+                    </RS.Col>
+                    <RS.Col md={3} className="text-right">
+                        <RS.Button
+                            color="primary" outline className="btn-md mt-1"
+                            href={`${API_PATH}/quiz/assignment/${assignment.id}/download`}
+                            onClick={() => dispatch(getQuizAssignmentResultsSummaryCSV(assignment?.id || -1))}
+                        >
+                            Export as CSV
+                        </RS.Button>
+                    </RS.Col>
+                </RS.Row>
                 <div className={`assignment-progress-details bg-transparent ${pageSettings.colourBlind ? " colour-blind" : ""}`}>
                     <AssignmentProgressLegend pageSettings={pageSettings} showQuestionKey />
                     <ResultsTable assignment={assignment} pageSettings={pageSettings} />

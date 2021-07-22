@@ -1025,6 +1025,17 @@ export const redirectForCompletedQuiz = (quizId: string) => (dispatch: Dispatch<
     history.push(generatePostQuizUrl(quizId));
 };
 
+export const getQuizAssignmentResultsSummaryCSV = (assignmentId: number) => async (dispatch: Dispatch<Action>) => {
+    try {
+        dispatch({type: ACTION_TYPE.QUIZ_ASSIGNMENT_RESULTS_CSV_REQUEST, assignmentId});
+        const response = await api.quizzes.getQuizAssignmentResultsSummaryCSV(assignmentId);
+        dispatch({type: ACTION_TYPE.QUIZ_ASSIGNMENT_RESULTS_CSV_RESPONSE_SUCCESS, assignmentResultsCSV: response.data});
+    } catch (error) {
+        dispatch({type: ACTION_TYPE.QUIZ_ASSIGNMENT_RESULTS_CSV_RESPONSE_FAILURE});
+        dispatch(showErrorToastIfNeeded("Failed to load quiz assignment results csv", error) as any);
+    }
+};
+
 // Question testing
 export const testQuestion = (questionChoices: FreeTextRule[], testCases: TestCaseDTO[]) => async (dispatch: Dispatch<Action>) => {
     try {
