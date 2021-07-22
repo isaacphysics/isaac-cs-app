@@ -23,6 +23,7 @@ import {ProgressBar} from "../elements/views/ProgressBar";
 import {safePercentage} from "../../services/validation";
 import {TeacherAchievement} from "../elements/TeacherAchievement";
 import {SITE, SITE_SUBJECT} from "../../services/siteConstants";
+import {LinkToContentSummaryList} from "../elements/list-groups/ContentSummaryListGroupItem";
 
 export const siteSpecific = {
     [SITE.PHY]: {
@@ -177,6 +178,16 @@ export const MyProgress = withRouter(({user, match: {params: {userIdOfInterest}}
                                 <ActivityGraph answeredQuestionsByDate={answeredQuestionsByDate} />
                             </div>
                         </div>}
+                        <RS.Row id="progress-questions">
+                            {progress?.mostRecentQuestions && progress?.mostRecentQuestions.length > 0 && <RS.Col md={12} lg={6} className="mt-4">
+                                <h4>Most recently answered questions</h4>
+                                <LinkToContentSummaryList items={progress.mostRecentQuestions}/>
+                            </RS.Col>}
+                            {progress?.oldestIncompleteQuestions && progress?.oldestIncompleteQuestions.length > 0 && <RS.Col md={12} lg={6} className="mt-4">
+                                <h4>Oldest unsolved questions</h4>
+                                <LinkToContentSummaryList items={progress.oldestIncompleteQuestions}/>
+                            </RS.Col>}
+                        </RS.Row>
                     </div>,
                     ...(viewingOwnData && isTeacher(user) && SITE_SUBJECT == SITE.PHY && {"Teacher Activity": <div>
                         <TeacherAchievement
