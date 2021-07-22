@@ -51,6 +51,7 @@ export const RoutesCS = [
 
     // Static pages:
     <StaticPageRoute key={key++} exact path="/about" pageId="about_us" />,
+    <StaticPageRoute key={key++} exact path="/safeguarding" pageId="events_safeguarding" />,
     <StaticPageRoute key={key++} exact path="/teaching_order" pageId="teaching_order" />,
     <StaticPageRoute key={key++} exact path="/student_rewards" pageId="student_rewards_programme" />,
 

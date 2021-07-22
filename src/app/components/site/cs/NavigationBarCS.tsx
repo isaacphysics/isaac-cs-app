@@ -41,6 +41,7 @@ export const NavigationBarCS = () => {
             <LinkItem to="/events?types=student">Student events</LinkItem>
             <LinkItem to="/events?types=teacher">Teacher events</LinkItem>
             <LinkItem to="/pages/2020_teacher_mentoring_cohort2">Teacher mentoring</LinkItem>
+            <LinkItem to="/safeguarding">Safeguarding</LinkItem>
         </NavigationSection>
 
         <NavigationSection title={<React.Fragment>
