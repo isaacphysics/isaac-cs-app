@@ -1,0 +1,48 @@
+// Adapt the PrismJS code for line numbering:
+// https://github.com/PrismJS/prism/blob/v1.24.1/plugins/line-numbers/prism-line-numbers.css
+
+$code-indent: 3.8em;
+
+// Prevent this from affecting any other code/pre blocks:
+.code-snippet {
+  pre.line-numbers {
+    position: relative;
+    padding-left: $code-indent;
+    counter-reset: linenumber;
+  }
+
+  pre.line-numbers > code {
+    position: relative;
+    white-space: inherit;
+  }
+
+  .line-numbers .line-numbers-rows {
+    position: absolute;
+    pointer-events: none;
+    top: 0;
+    font-size: 100%;
+    left: -$code-indent;
+    width: $code-indent - 0.8em;
+    letter-spacing: -1px;
+    border-right: 1px solid #ccc;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+  }
+
+  .line-numbers-rows > span {
+    display: block;
+    counter-increment: linenumber;
+  }
+
+  .line-numbers-rows > span:before {
+    content: counter(linenumber);
+    color: #999;
+    display: block;
+    padding-right: 0.5em;
+    text-align: right;
+  }
+}
